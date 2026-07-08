@@ -36,7 +36,7 @@ def handle_conn(client_sock, addr):
     print(f"New connection detected from: {addr[0]}:{addr[1]}")
     try:
         transport = paramiko.Transport(client_sock) #normal socket in the SSH paramiko protocol
-        transport.add_server_key(HOST_KEY)
+        transport.add_server_key(HOST_K)
 
         server = SSHServer(client_ip = addr[0])
         try:
