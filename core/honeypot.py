@@ -8,7 +8,13 @@ sys.path.append(BASE_DIR)
 
 from core.database import init_db, log_attack
 
-HOST_K = paramiko.RSAKey.generate(2048) #generates a RSA "bait" to pretend to be a real server, like a usual SSH server
+KEY_FILE = os.path.join(BASE_DIR, "server_rsa.key")
+if os.path.exists(KEY_FILE):
+    #check if a key exists already otherwise we create one and server keeps the same identity
+    HOST_K = paramiko.RSAKey.from_private_key_file(KEY_FILE)
+else:
+    HOST_K = paramiko.RSAKey.generate(2048) #if it's the first time we generate a key and save it
+    HOST_K.write_private_key(KEY_FILE)
 
 class SSHServer(paramiko.ServerInterface): #using a server interface
     def __init__(self, client_ip):
