@@ -34,11 +34,11 @@ def log_attack(ip_address, username, password):
     cursor = conn.cursor()
 
     #generates the exact time of the attack
-    now = datetime.datetime.now().strftime("%Y-%m-%d $H:$M.$S")
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M.%S")
 
     #we add data carefully to avoid SQL injection
     cursor.execute('''
-                    INSER INTO attacks (timestamp, ip_addres, username, password)
+                    INSERT INTO attacks (timestamp, ip_address, username, password)
                     VALUES(?, ?, ?, ?)                       
                    ''', (now, ip_address, username, password)) #(?,?,?,?) cybersec measure to avoid that an attacker might insert "DROP TABLE attacks, so sqlite3 knows that those values are just junk and defuse them before saving"
     
