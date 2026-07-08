@@ -8,8 +8,8 @@
     <style>
         body {
             font-family: monospace;
-            background-color: #0000;
-            color: #ffff;
+            background-color: #1e1e1e;
+            color: #00ff00;
             padding: 20px;
         }
 
@@ -73,10 +73,10 @@
             } catch (error) {
                 console.errore("Error fetching data:", error);
             }
-            fetchAttacks();
-            setInterval(fetchAttacks, 5000); //loads data once the page is opened and then every 5 secs
-
         }
+        fetchAttacks();
+        setInterval(fetchAttacks, 5000); //loads data once the page is opened and then every 5 secs
+
     </script>
 </body>
 
