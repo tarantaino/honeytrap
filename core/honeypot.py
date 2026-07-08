@@ -56,7 +56,7 @@ def start_hp(host = "0.0.0.0", port = 2222):
 
         #we accept 100 connection queue max
         sock.listen(100)
-        print(f"\_/HoneyTrap Active\_/")
+        print(f"HoneyTrap Active")
         print(f"Listening to SSH attacks on {host}:{port}...")
 
         while True:
