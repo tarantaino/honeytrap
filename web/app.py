@@ -3,7 +3,7 @@ import sys
 import os
 
 #we allow python to check in the main directory so we can import database.py
-BASE_DIR = os.path.direname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
 app = Flask(__name__)
