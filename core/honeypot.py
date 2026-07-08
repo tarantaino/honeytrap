@@ -14,7 +14,7 @@ if os.path.exists(KEY_FILE):
     HOST_K = paramiko.RSAKey.from_private_key_file(KEY_FILE)
 else:
     HOST_K = paramiko.RSAKey.generate(2048) #if it's the first time we generate a key and save it
-    HOST_K.write_private_key(KEY_FILE)
+    HOST_K.write_private_key_file(KEY_FILE)
 
 class SSHServer(paramiko.ServerInterface): #using a server interface
     def __init__(self, client_ip):
