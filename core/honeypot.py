@@ -1,6 +1,11 @@
 import socket
 import paramiko
 import threading
+import sys
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
+
 from core.database import init_db, log_attack
 
 HOST_K = paramiko.RSAKey.generate(2048) #gerenates a RSA "bait" to pretend to be a real server, like a usual SSH server
