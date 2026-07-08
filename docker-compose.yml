@@ -4,20 +4,21 @@ services:
   honeypot:
     build: .
     container_name: honeytrap_ssh
-
     command: python core/honeypot.py
-    ports: -"2222:2222"
-    volumes: -.:/app
-
+    ports:
+      - "2222:2222"
+    volumes:
+      - .:/app
     restart: unless-stopped
 
   web_dashboard:
     build: .
     container_name: honeytrap_web
     command: python web/app.py
-    ports: -"5000:5000"
-    volumes: -.:/app
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
     restart: unless-stopped
-
     depends_on:
       - honeypot
