@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charser="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoneyPot Dashboard</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #41BAB5;
+            color: #E683C8;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #0000;
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HoneyTrap Dashboard - HoneyPot SSH</h1>
+    <p>Real-time registered attacks:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date and Time</th>
+                <th>Attacker IP</th>
+                <th>Username</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody id="attack-table-body">
+            <!-- JS gonna write data here -->
+        </tbody>
+    </table>
+
+    <script>
+        //JS going to read our API
+        async function fetchAttacks() {
+            try {
+                //invokes python route established in app.py
+                const response = await fetch('/api/attacks');
+                const data = await response.json();
+
+                const tableBody = document.getElementById('attack-table-body');
+                tableBody.innerHTML = "";
+
+                data.forEach(attack => {
+                    tableBody.innerHTML += `
+                            <tr>
+                                <td>${attack.id}</td>
+                                <td>${attack.timestamp}</td>
+                                <td>${attack.ip_address}</td>
+                                <td><strong style="color: yellow;">${attack.username}</td>
+                                <td><strong style="color: red;">${attack.password}</td>
+                            </tr>                                               
+                        `;
+                });
+
+            } catch (error) {
+                console.errore("Error fetching data:", error);
+            }
+            fetchAttacks();
+            setInterval(fetchAttacks, 5000); //loads data once the page is opened and then every 5 secs
+
+        }
+    </script>
+</body>
+
+</html>

@@ -44,3 +44,21 @@ def log_attack(ip_address, username, password):
     
     conn.commit()
     conn.close()
+
+def get_all_attacks():
+    #reads every attacks on db and return them as a dictionary list
+    conn = sqlite3.connect(DB_PATH)
+
+    #now we get data as columns names
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    #SQL query to get everything
+    cursor.execute("SELECT * FROM attacks ORDER BY timestamp DESC")
+
+    #fetachall() takes all the results found by cursor
+    rows = cursor.fetchall()
+    conn.close()
+
+    #now we convert them in a standard python dict
+    return[dict(row) for row in rows]
