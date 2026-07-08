@@ -7,6 +7,6 @@ It aims to develop a honeypot, a fake vulnerable SSH server via the paramiko lib
 Finally, I'll add a simple UI using Flask.
 
 # Roadmap
-[]Build a Python script
-[]Managing the SQLite DB
-[]Developing the UI via Flask
+[ ] Build a Python script
+[ ] Managing the SQLite DB
+[ ] Developing the UI via Flask
