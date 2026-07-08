@@ -24,7 +24,14 @@ class SSHServer(paramiko.ServerInterface): #using a server interface
     #intercept username and pswd
     def check_auth_password(self, username, password):
         print(f"Login attempt: User:{username} | Password: {password}")
-        log_attack(self.client_ip, username, password)
+        sys.stdout.flush()#forcing print
+        try:
+            log_attack(self.client_ip, username, password)
+            print("Attack saved in DB.")
+        except Exception as e:
+            print(f"Error: {e}")
+        
+        sys.stdout.flush()
         #always return fail authentication so that the user never access
         return paramiko.AUTH_FAILED
         
@@ -41,6 +48,7 @@ class SSHServer(paramiko.ServerInterface): #using a server interface
         
 def handle_conn(client_sock, addr):
     print(f"New connection detected from: {addr[0]}:{addr[1]}")
+    sys.stdout.flush()
     try:
         transport = paramiko.Transport(client_sock) #normal socket in the SSH paramiko protocol
         transport.add_server_key(HOST_K)
@@ -76,6 +84,7 @@ def start_hp(host = "0.0.0.0", port = 2222):
         sock.listen(100)
         print(f"HoneyTrap Active")
         print(f"Listening to SSH attacks on {host}:{port}...")
+        sys.stdout.flush()
 
         while True: #server on
             client_socket, addr = sock.accept()
