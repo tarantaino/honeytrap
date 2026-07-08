@@ -11,7 +11,7 @@ from core.database import init_db, log_attack
 HOST_K = paramiko.RSAKey.generate(2048) #gerenates a RSA "bait" to pretend to be a real server, like a usual SSH server
 
 class SSHServer(paramiko.ServerInterface): #using a server interface
-    def __init__(self):
+    def __init__(self, client_ip):
         self.event=threading.Event() #threading to receive different attacks
         self.client_ip = client_ip
 
