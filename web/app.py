@@ -6,6 +6,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
+from core.database import get_all_attacks
+
 app = Flask(__name__)
 
 #this route loads the webpage

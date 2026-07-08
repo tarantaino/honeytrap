@@ -16,9 +16,9 @@ class SSHServer(paramiko.ServerInterface): #using a server interface
         self.client_ip = client_ip
 
         #intercept username and pswd
-        def check_auth_psw(self, username, password):
+        def check_auth_password(self, username, password):
             print(f"Login attempt: User:{username} | Password: {password}")
-
+            log_attack()
             #always return fail authentication so that the user never access
             return paramiko.AUTH_FAILED
         
@@ -79,5 +79,5 @@ def start_hp(host = "0.0.0.0", port = 2222):
     except Exception as e:
         print(f"Critical server error: {str(e)}")
 
-if __name__ == "__main___":
+if __name__ == "__main__":
     start_hp()
