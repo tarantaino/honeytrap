@@ -3,7 +3,7 @@ import datetime
 import os
 
 #define where to save db files (main project directory)
-BASE_DIR = os.path.dirname(os.path.diraname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "honeytrap.db")
 
 def init_db():
