@@ -13,6 +13,18 @@
     <p>Real-time registered attacks:</p>
 
     <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data e Ora</th>
+                <th>IP Attaccante</th>
+                <th>Username</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody id="attack-table-body">
+            <!-- JS is going to populate here -->
+        </tbody>
     </table>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
