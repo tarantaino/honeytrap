@@ -1,0 +1,46 @@
+import sqlite3
+import datetime
+import os
+
+#define where to save db files (main project directory)
+BASE_DIR = os.path.dirname(os.path.diraname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "honeytrap.db")
+
+def init_db():
+    #inizialize DB and check if the table exsists already
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    #create "attacks" table with attribute: id, data, ip, user and password
+    #cursor method allows to manage tables
+    cursor.execute('''
+                   CREATE TABLE IF NOT EXISTS attacks(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    timestamp TEXT,
+                    ip_address TEXT,
+                    username TEXT,
+                    password TEXT
+                    )
+                 '''  
+    )
+
+    conn.commit() #commit saves the changes
+    conn.close()
+    print("DB SQLite ready and initialized.")
+
+def log_attack(ip_address, username, password):
+    #Register an intrusion attempt to the db
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    #generates the exact time of the attack
+    now = datetime.datetime.now().strftime("%Y-%m-%d $H:$M.$S")
+
+    #we add data carefully to avoid SQL injection
+    cursor.execute('''
+                    INSER INTO attacks (timestamp, ip_addres, username, password)
+                    VALUES(?, ?, ?, ?)                       
+                   ''', (now, ip_address, username, password)) #(?,?,?,?) cybersec measure to avoid that an attacker might insert "DROP TABLE attacks, so sqlite3 knows that those values are just junk and defuse them before saving"
+    
+    conn.commit()
+    conn.close()
