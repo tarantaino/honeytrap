@@ -8,29 +8,30 @@ sys.path.append(BASE_DIR)
 
 from core.database import init_db, log_attack
 
-HOST_K = paramiko.RSAKey.generate(2048) #gerenates a RSA "bait" to pretend to be a real server, like a usual SSH server
+HOST_K = paramiko.RSAKey.generate(2048) #generates a RSA "bait" to pretend to be a real server, like a usual SSH server
 
 class SSHServer(paramiko.ServerInterface): #using a server interface
     def __init__(self, client_ip):
         self.event=threading.Event() #threading to receive different attacks
         self.client_ip = client_ip
 
-        #intercept username and pswd
-        def check_auth_password(self, username, password):
-            print(f"Login attempt: User:{username} | Password: {password}")
-            log_attack()
-            #always return fail authentication so that the user never access
-            return paramiko.AUTH_FAILED
+    #intercept username and pswd
+    def check_auth_password(self, username, password):
+        print(f"Login attempt: User:{username} | Password: {password}")
+        log_attack(self.client_ip, username, password)
+        #always return fail authentication so that the user never access
+        return paramiko.AUTH_FAILED
         
-        #deny access via public key, we need clear pswd
-        def check_auth_publickey(self, username, key):
-            return paramiko.AUTH_FAILED
-        #we only accept pswd as way to access
-        def get_allowed_auth(self, username):
-            return "password"
+    #deny access via public key, we need clear pswd
+    def check_auth_publickey(self, username, key):
+        return paramiko.AUTH_FAILED
         
-        def check_chann_request(self, kind, chaind):
-            return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
+    #we only accept pswd as way to access
+    def get_allowed_auths(self, username):
+        return "password"
+        
+    def check_channel_request(self, kind, chanid):
+        return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
         
 def handle_conn(client_sock, addr):
     print(f"New connection detected from: {addr[0]}:{addr[1]}")
