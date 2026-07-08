@@ -1,12 +1,14 @@
 import socket
 import paramiko
 import threading
+from core.database import init_db, log_attack
 
 HOST_K = paramiko.RSAKey.generate(2048) #gerenates a RSA "bait" to pretend to be a real server, like a usual SSH server
 
 class SSHServer(paramiko.ServerInterface): #using a server interface
     def __init__(self):
         self.event=threading.Event() #threading to receive different attacks
+        self.client_ip = client_ip
 
         #intercept username and pswd
         def check_auth_psw(self, username, password):
@@ -22,13 +24,16 @@ class SSHServer(paramiko.ServerInterface): #using a server interface
         def get_allowed_auth(self, username):
             return "password"
         
+        def check_chann_request(self, kind, chaind):
+            return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
+        
 def handle_conn(client_sock, addr):
     print(f"New connection detected from: {addr[0]}:{addr[1]}")
     try:
         transport = paramiko.Transport(client_sock) #normal socket in the SSH paramiko protocol
         transport.add_server_key(HOST_KEY)
 
-        server = SSHServer()
+        server = SSHServer(client_ip = addr[0])
         try:
             transport.start_server(server=server)
         except paramiko.SSHException:
@@ -48,10 +53,11 @@ def handle_conn(client_sock, addr):
             pass
 
 def start_hp(host = "0.0.0.0", port = 2222):
+    init_db() #inizialize db before opening ports
     try:
         #socket listening
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind((host, port))
 
         #we accept 100 connection queue max
@@ -59,7 +65,7 @@ def start_hp(host = "0.0.0.0", port = 2222):
         print(f"HoneyTrap Active")
         print(f"Listening to SSH attacks on {host}:{port}...")
 
-        while True:
+        while True: #server on
             client_socket, addr = sock.accept()
             #open a separate thread for every attacker
             client_thread = threading.Thread(target=handle_conn, args=(client_socket, addr))
