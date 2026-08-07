@@ -56,7 +56,7 @@ python web/app.py
 
 5. Access the dashboard at `http://localhost:5000`.
 
-##How to Test it
+## How to Test it
 To simulate an attack and see the HoneyPot in action, open a new terminal and try to connect to it via SSH:
 ```bash
 ssh root@127.0.0.1 -p 2222
