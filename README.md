@@ -25,7 +25,7 @@ The collected data is safely stored in a local SQLite DB and displayed in real-t
 
 - Dockerizerd Environment: the whole infrastructure can be easily spun up in isolated containers using Docker Compose
 
-## How to Run
+# How to Run
 You can run this project in two ways: Docker (Recommended) or locally on your machine.
 
 # Docker (Recommended)
