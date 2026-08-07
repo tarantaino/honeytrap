@@ -28,7 +28,7 @@ The collected data is safely stored in a local SQLite DB and displayed in real-t
 ## How to Run
 You can run this project in two ways: Docker (Recommended) or locally on your machine.
 
-**Docker (Recommended)**
+# Docker (Recommended)
 This is the easies way to run the project in a safe, isolated environment.
 1. Make sure you have Docker and Docker Desktop installed.
 2. Clone this repository and navigate to the project folder.
@@ -38,7 +38,7 @@ docker compose up --build
 ```
 4. The HoneyPot is now listening on port `2222` and the web dashboard is available at `http://localhost:5000`.
 
-**Running Locally**
+# Running Locally
 If you prefer to run the scripts directly on your OS:
 1. Ensure you have Python 3.x installed.
 2. Install the required dependencies:
